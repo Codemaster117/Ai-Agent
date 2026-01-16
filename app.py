@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')  # Fuerza la carpeta exacta
 
 # Configure your AI agents here
 AI_AGENTS = [
@@ -50,7 +51,7 @@ task_counter = 0
 
 @app.route('/')
 def index():
-    return "<h1>¡Funciona perfecto, Alejandro! 🚀 Tu portal está live en Render.</h1><p>Prueba <a href='/sync-mode'>Sync Mode</a> o <a href='/health'>health</a>.</p>"
+    return render_template('index.html', agents=AI_AGENTS)
 
 @app.route('/sync-mode')
 def sync_mode():
