@@ -50,7 +50,7 @@ task_counter = 0
 
 @app.route('/')
 def index():
-    return render_template('index.html', agents=AI_AGENTS)
+    return "<h1>¡Funciona perfecto, Alejandro! 🚀 Tu portal está live en Render.</h1><p>Prueba <a href='/sync-mode'>Sync Mode</a> o <a href='/health'>health</a>.</p>"
 
 @app.route('/sync-mode')
 def sync_mode():
