@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync Mode - AI Agent Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sync.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔄 Synchronized Agent Mode</h1>
+            <p class="subtitle">Orchestrate multiple agents working together</p>
+            <div class="mode-toggle">
+                <a href="/" class="mode-btn">Portal Mode</a>
+                <a href="/sync-mode" class="mode-btn active">Sync Mode</a>
+            </div>
+        </header>
+
+        <div class="sync-layout">
+            <!-- Left Panel: Agent Selection -->
+            <aside class="agent-panel">
+                <h2>Available Agents</h2>
+                <div class="agent-list">
+                    {% for agent in agents %}
+                    <div class="agent-item" data-agent-id="{{ agent.id }}">
+                        <div class="agent-item-header">
+                            <span class="agent-item-icon">{{ agent.icon }}</span>
+                            <span class="agent-item-name">{{ agent.name }}</span>
+                        </div>
+                        <div class="agent-capabilities">
+                            {% for cap in agent.capabilities %}
+                            <span class="capability-tag">{{ cap }}</span>
+                            {% endfor %}
+                        </div>
+                        <a href="/agent/{{ agent.id }}" class="mini-launch" target="_blank">Launch →</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </aside>
+
+            <!-- Center Panel: Task Creation & List -->
+            <main class="task-panel">
+                <div class="task-creator">
+                    <h2>Create New Task</h2>
+                    <form id="taskForm">
+                        <input type="text" id="taskTitle" placeholder="Task title..." required>
+                        <textarea id="taskDescription" placeholder="Task description..." rows="3"></textarea>
+                        
+                        <div class="agent-selector">
+                            <label>Assign Agents:</label>
+                            <div class="agent-checkboxes">
+                                {% for agent in agents %}
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="agents" value="{{ agent.id }}">
+                                    {{ agent.icon }} {{ agent.name }}
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="subtask-creator">
+                            <label>Subtasks:</label>
+                            <div id="subtaskList"></div>
+                            <button type="button" id="addSubtask" class="btn-secondary">+ Add Subtask</button>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Create Task</button>
+                    </form>
+                </div>
+
+                <div class="task-list">
+                    <h2>Active Tasks</h2>
+                    <div id="taskContainer"></div>
+                </div>
+            </main>
+
+            <!-- Right Panel: Progress Dashboard -->
+            <aside class="progress-panel">
+                <h2>Progress Dashboard</h2>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalTasks">0</div>
+                        <div class="stat-label">Total Tasks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="activeTasks">0</div>
+                        <div class="stat-label">Active</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="completedTasks">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-label">Overall Progress</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="overallProgress" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-percent" id="progressPercent">0%</div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='sync.js') }}"></script>
+</body>
+</html>
